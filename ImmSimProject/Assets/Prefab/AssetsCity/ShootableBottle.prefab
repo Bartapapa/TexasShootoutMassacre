@@ -81,6 +81,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f5fdc4ee53498c46847c6a500a72eca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canBeDestroyed: 1
+  _hitForceThreshold: -1
+  glassBreak: {fileID: 19808544, guid: fdceb879a63b0cf4dad524c260bbb8e1, type: 3}
 --- !u!54 &7767217149826284266
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class Sc_Weapon : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class Sc_Weapon : MonoBehaviour
     private float _activeCooldown;
     private bool _reloading;
     private Damager _damager;
+    private Animator _anim;
 
     public UnityEvent<int, int> WeaponShot;
     public UnityEvent<int, int> WeaponReloaded;
@@ -39,6 +41,7 @@ public class Sc_Weapon : MonoBehaviour
                 source.Play();
                 TraceBulletPath();
                 _activeCooldown = _shootCooldown;
+                _anim.Play("Gun_Fire", 0);
             }
             else
             {
@@ -56,6 +59,7 @@ public class Sc_Weapon : MonoBehaviour
             AudioSource source = gameObject.GetComponent<AudioSource>();
             source.clip = _reloadSound;
             source.Play();
+            _anim.Play("Gun_Reload", 0);
         }
     }
     private void ReloadComplete()
@@ -111,6 +115,7 @@ public class Sc_Weapon : MonoBehaviour
     private void Start()
     {
         _damager = GetComponentInParent<Damager>();
+        _anim = GetComponent<Animator>();
         ReloadComplete();
     }
     private void Update()
