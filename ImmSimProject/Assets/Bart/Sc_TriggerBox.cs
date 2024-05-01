@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class Sc_TriggerBox : MonoBehaviour
 {
@@ -23,19 +24,33 @@ public class Sc_TriggerBox : MonoBehaviour
                 return _canBeTriggered;
             }
         }
-        set
-        {
-            _canBeTriggered = value;
-        }
+    }
+
+    public void SetCanBeTriggered(bool value)
+    {
+        _canBeTriggered = value;
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("?!?!?!");
+
+        PlayerInput player = other.transform.parent.GetComponent<PlayerInput>();
+        if (!player)
+        {
+            Debug.Log("No player found in " + other.gameObject.name);
+        }
+
         if (CanBeTriggered)
         {
             Trigger.Invoke();
             _canBeTriggered = false;
             _triggeredOnce = true;
+            Debug.Log("Triggered!");
+        }
+        else
+        {
+            Debug.Log("Can't be triggered!");
         }
     }
 }

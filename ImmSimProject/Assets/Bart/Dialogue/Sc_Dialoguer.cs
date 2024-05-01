@@ -17,17 +17,26 @@ public class Sc_Dialoguer : MonoBehaviour
     public UnityEvent OnDialogueStart;
     public UnityEvent OnDialogueEnd;
 
+    public Sc_DialogueBox DialogueBoxPrefab;
     public List<DialogueLine> DialogueLines = new List<DialogueLine>();
 
     private int _currentLineIndex = -1;
+    private Sc_DialogueBox _currentDialogueBox;
 
     public void StartDialogue()
     {
         OnDialogueStart.Invoke();
+
+        GoToNextLine();
     }
 
     public void EndDialogue()
     {
+        if (_currentDialogueBox)
+        {
+            RemoveCurrentDialogueBox();
+        }
+
         OnDialogueEnd.Invoke();
         _currentLineIndex = -1;
     }
@@ -37,7 +46,23 @@ public class Sc_Dialoguer : MonoBehaviour
         if (CheckNextLine())
         {
             _currentLineIndex++;
-            //Current line = DialogueLines[currentLineIndex];
+            if (_currentDialogueBox)
+            {
+                RemoveCurrentDialogueBox();
+            }
+            if (DialogueLines[_currentLineIndex].Speaker == null)
+            {
+                Debug.LogWarning("No speaker for this line. Ending dialogue.");
+                EndDialogue();
+            }
+            else
+            {
+                _currentDialogueBox = Instantiate<Sc_DialogueBox>(DialogueBoxPrefab,
+                    DialogueLines[_currentLineIndex].Speaker.transform.position + (Vector3.up * 2f),
+                    Quaternion.identity);
+                _currentDialogueBox.GenerateDialogueBox(DialogueLines[_currentLineIndex]);
+                _currentDialogueBox.OnDialogueBoxEnded += OnCurrentDialogueBoxEnded;
+            }       
         }
         else
         {
@@ -57,5 +82,17 @@ public class Sc_Dialoguer : MonoBehaviour
             //nope
             return false;
         }
+    }
+
+    private void RemoveCurrentDialogueBox()
+    {
+        _currentDialogueBox.OnDialogueBoxEnded -= OnCurrentDialogueBoxEnded;
+        Destroy(_currentDialogueBox.gameObject);
+        _currentDialogueBox = null;
+    }
+
+    private void OnCurrentDialogueBoxEnded()
+    {
+        GoToNextLine();
     }
 }
