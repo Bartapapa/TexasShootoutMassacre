@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Sc_Shootable : MonoBehaviour
 {
+    public UnityEvent OnShootableDestroy;
+
     [Header("Parameters")]
     [SerializeField] private bool _canBeDestroyed = false;
     [SerializeField] private float _hitForceThreshold = -1f;
@@ -41,6 +44,7 @@ public class Sc_Shootable : MonoBehaviour
         {
             ParticleSystem newParticle = Instantiate<ParticleSystem>(glassBreak, transform.position, Quaternion.identity);
         }
+        OnShootableDestroy?.Invoke();
         Destroy(this.gameObject);
     }
 }
