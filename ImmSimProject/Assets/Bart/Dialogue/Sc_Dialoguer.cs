@@ -10,6 +10,7 @@ public class DialogueLine
     [TextArea(5, 20)]
     public string Lines;
     public float Duration = 1f;
+    public bool Shout = false;
 }
 
 public class Sc_Dialoguer : MonoBehaviour
@@ -58,9 +59,17 @@ public class Sc_Dialoguer : MonoBehaviour
             else
             {
                 _currentDialogueBox = Instantiate<Sc_DialogueBox>(DialogueBoxPrefab,
-                    DialogueLines[_currentLineIndex].Speaker.transform.position + (Vector3.up * 2f),
+                    DialogueLines[_currentLineIndex].Speaker.transform.position + (Vector3.up * 2.5f),
                     Quaternion.identity);
-                _currentDialogueBox.GenerateDialogueBox(DialogueLines[_currentLineIndex]);
+                if (DialogueLines[_currentLineIndex].Shout)
+                {
+                    _currentDialogueBox.GenerateDialogueBox(DialogueLines[_currentLineIndex], 40);
+                }
+                else
+                {
+                    _currentDialogueBox.GenerateDialogueBox(DialogueLines[_currentLineIndex]);
+                }
+                
                 _currentDialogueBox.OnDialogueBoxEnded += OnCurrentDialogueBoxEnded;
             }       
         }

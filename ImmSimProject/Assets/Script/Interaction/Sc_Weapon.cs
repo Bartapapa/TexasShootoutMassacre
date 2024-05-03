@@ -158,6 +158,9 @@ public class Sc_Weapon : MonoBehaviour
         // For more details you can see: https://youtu.be/fsDE_mO4RZM or if using Unity 2021+: https://youtu.be/zyzqA_CPz2E
 
         Vector3 direction = GetParticleSystemDirection();
+        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * _range, Color.blue, 5f);
+        Debug.DrawLine(Camera.main.transform.position, rayHit.point, Color.yellow, 6f);
+        Debug.LogWarning("Origin point: " + Camera.main.transform.position + ", End point: " + rayHit.point);
 
         if (hasHit)
         {

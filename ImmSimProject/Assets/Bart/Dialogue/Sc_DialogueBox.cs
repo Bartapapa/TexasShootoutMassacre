@@ -14,17 +14,18 @@ public class Sc_DialogueBox : MonoBehaviour
     private float _lifeTimeTimer = -1f;
     private bool _dialogueBoxReachedDuration = false;
 
-    public void GenerateDialogueBox(DialogueLine lines)
+    public void GenerateDialogueBox(DialogueLine lines, int overrideFontSize = 20)
     {
-        PopulateLines(lines.Lines);
+        PopulateLines(lines.Lines, overrideFontSize);
         SetLifetimeTimer(lines.Duration);
 
         OnDialogueBoxStarted?.Invoke();
     }
 
-    private void PopulateLines(string lines)
+    private void PopulateLines(string lines, int overrideFontSize)
     {
         textBox.text = lines;
+        textBox.fontSize = overrideFontSize;
     }
 
     private void SetLifetimeTimer(float duration)

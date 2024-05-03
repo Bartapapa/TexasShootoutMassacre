@@ -33,12 +33,11 @@ public class Sc_TriggerBox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("?!?!?!");
-
         PlayerInput player = other.transform.parent.GetComponent<PlayerInput>();
         if (!player)
         {
             Debug.Log("No player found in " + other.gameObject.name);
+            return;
         }
 
         if (CanBeTriggered)
