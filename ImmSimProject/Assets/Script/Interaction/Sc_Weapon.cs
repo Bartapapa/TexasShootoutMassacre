@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using System.ComponentModel;
 
 public class Sc_Weapon : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class Sc_Weapon : MonoBehaviour
 
     public UnityEvent<int, int> WeaponShot;
     public UnityEvent<int, int> WeaponReloaded;
+    public delegate void DefaultEvent();
+    public DefaultEvent ShootWeapon;
 
     public void Shoot()
     {
@@ -36,6 +39,7 @@ public class Sc_Weapon : MonoBehaviour
                 _magCurrentAmmo--;
                 _muzzleFlashVFX.Play();
                 WeaponShot.Invoke(_magCurrentAmmo, _magSize);
+                ShootWeapon?.Invoke();
                 AudioSource source = gameObject.GetComponent<AudioSource>();
                 source.clip = _shotSound;
                 source.Play();
